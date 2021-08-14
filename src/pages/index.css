@@ -1,0 +1,32 @@
+.correct,
+.correct:hover {
+  background-color: #1db900;
+  border-left: 4px solid #0f6300;
+  color: #fff;
+}
+
+.incorrect,
+.incorrect:hover {
+  background-color: #ec0000;
+  border-left: 4px solid #ff3b3b;
+  color: #fff;
+}
+
+.next-button[disabled] {
+  display: none;
+}
+
+.final-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.footer-card {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
