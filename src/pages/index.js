@@ -15,7 +15,6 @@ const containerStyles = {
 
 const cardStyle = {
   width: 600,
-  height: 300,
 }
 
 
@@ -24,58 +23,46 @@ const IndexPage = () => {
   const [questions, setQuestions] = React.useState([{
     question: 'Pergunta 1?',
     answers: [
-      'Opção 1',
-      'Opção 2',
-      'Opção 3',
+      { answer: 'Opção 1', redirectStep: 2 },
+      { answer: 'Opção 2', redirectStep: 2 },
+      { answer: 'Opção 3', redirectStep: 3 },
     ],
-    correctAnswer: 'Opção 2'
   },
   {
     question: 'Pergunta 2?',
     answers: [
-      'Opção 1',
-      'Opção 2',
-      'Opção 3',
+      { answer: 'Opção 1', redirectStep: 1 },
+      { answer: 'Opção 2', redirectStep: 3 },
+      { answer: 'Opção 3', redirectStep: 4 },
     ],
-    correctAnswer: 'Opção 3'
   },
   {
     question: 'Pergunta 3?',
     answers: [
-      'Opção 1',
-      'Opção 2',
-      'Opção 3',
+      { answer: 'Opção 1', redirectStep: 1 },
+      { answer: 'Opção 2', redirectStep: 2 },
+      { answer: 'Opção 3', redirectStep: 4 },
     ],
-    correctAnswer: 'Opção 1'
   },
   {
     question: 'Pergunta 4?',
     answers: [
-      'Opção 1',
-      'Opção 2',
-      'Opção 3',
+      { answer: 'Opção 1', redirectStep: 2 },
+      { answer: 'Opção 2', redirectStep: 3 },
+      { answer: 'Opção 3', redirectStep: 5 },
     ],
-    correctAnswer: 'Opção 2'
   }])
-  const [correctAnswer, setCorrectAnswer] = React.useState(0)
   const [clickAnswer, setClickAnswer] = React.useState('')
-  const [step, setStep] = React.useState(0)
+  const [step, setStep] = React.useState(1)
 
-  const checkAnswer = (answer) => {
-    if (answer === questions[step].correctAnswer) {
-      setCorrectAnswer(questions[step].correctAnswer)
-      setClickAnswer(answer)
-    } else {
-      setCorrectAnswer(0)
-      setClickAnswer(answer)
-    }
+  const nextStep = (clickAnswer) => {
+    questions[step - 1].answers.forEach(answer => {
+      if (answer.answer === clickAnswer.answer) {
+        setStep(answer.redirectStep)
+        setClickAnswer('')
+      }
+    })
 
-  }
-
-  const nextStep = () => {
-    setStep(step + 1)
-    setCorrectAnswer(0)
-    setClickAnswer('')
   }
 
 
@@ -84,27 +71,23 @@ const IndexPage = () => {
     <Container style={containerStyles}>
       <Card style={cardStyle}>
         <Card.Body>
-          {step < questions.length ? (<><Card.Title>{questions[step].question}</Card.Title>
-            <ListGroup>
-              {questions[step].answers && questions[step].answers.map(answer => {
-                console.log(answer)
+          {step <= questions.length ? (<><Card.Title>{questions[step - 1].question}</Card.Title>
+            <ListGroup style={{ marginTop: 30 }}>
+              {questions[step - 1].answers && questions[step - 1].answers.map(answer => {
                 return (
-                  <ListGroup.Item key={answer} action disabled={clickAnswer ? true : false} onClick={() => checkAnswer(answer)} className={correctAnswer === answer ? 'correct' : clickAnswer === answer ? 'incorrect' : ''}>{answer}</ListGroup.Item>
+                  <ListGroup.Item key={answer.answer} action active={answer.answer === clickAnswer.answer} disabled={clickAnswer} onClick={() => setClickAnswer(answer)}>{answer.answer}</ListGroup.Item>
                 )
               })}
             </ListGroup>
-            <div className='footer-card'>
-              {
-                correctAnswer ? 'Resposta Correta!!' : clickAnswer ? 'Resposta Incorreta!!' : ''
-              }
-              <Button variant='success' className='next-button success' disabled={clickAnswer && questions.length >= step ? false : true} onClick={() => nextStep()}>
+            <div className='footer-card' disabled={!clickAnswer}>
+              <Button variant='success' className='next-button success' onClick={() => nextStep(clickAnswer)}>
                 Proximo
               </Button>
             </div>
           </>) : (
             <>
               <div className='final-page'>
-                <h3>Você completou o questionario!!</h3>
+                <h3>Você completou o questionário!!</h3>
                 <h5>Obrigado</h5>
               </div>
             </>)}

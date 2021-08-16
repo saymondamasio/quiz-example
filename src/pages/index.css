@@ -1,18 +1,4 @@
-.correct,
-.correct:hover {
-  background-color: #1db900;
-  border-left: 4px solid #0f6300;
-  color: #fff;
-}
-
-.incorrect,
-.incorrect:hover {
-  background-color: #ec0000;
-  border-left: 4px solid #ff3b3b;
-  color: #fff;
-}
-
-.next-button[disabled] {
+.footer-card[disabled] {
   display: none;
 }
 
@@ -25,8 +11,8 @@
 }
 
 .footer-card {
-  height: 50%;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
